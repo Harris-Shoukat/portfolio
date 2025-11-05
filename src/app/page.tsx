@@ -1,10 +1,11 @@
 import React from 'react';
+import Hero from './components/Hero';
 
 const HomePage = () => {
   return (
-    <div>
-      <h1>Welcome to my portfolio!</h1>
-    </div>
+    <>
+      <Hero />
+    </>
   );
 };
 
