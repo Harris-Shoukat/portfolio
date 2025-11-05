@@ -1,13 +1,30 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import styles from './Hero.module.css';
 
 const Hero = () => {
   const canvasRef = useRef(null);
+  const [currentWord, setCurrentWord] = useState('Frontend Developer');
+  const [fade, setFade] = useState(true);
+  const words = ['Frontend Developer', 'Designer', 'Freelancer'];
 
+  // === Smooth Rotate Words ===
   useEffect(() => {
-    // === Scene Setup ===
+    let index = 0;
+    const interval = setInterval(() => {
+      setFade(false); // fade out
+      setTimeout(() => {
+        index = (index + 1) % words.length;
+        setCurrentWord(words[index]);
+        setFade(true); // fade in
+      }, 500); // fade-out duration
+    }, 2500); // word duration
+    return () => clearInterval(interval);
+  }, []);
+
+  // === Three.js Background ===
+  useEffect(() => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       75,
@@ -24,22 +41,19 @@ const Hero = () => {
     renderer.setPixelRatio(window.devicePixelRatio);
     camera.position.z = 8;
 
-    // === Create circular dot texture ===
+    // Circle Texture
     const size = 64;
     const circleCanvas = document.createElement('canvas');
     circleCanvas.width = size;
     circleCanvas.height = size;
     const ctx = circleCanvas.getContext('2d');
-
     ctx.beginPath();
     ctx.arc(size / 2, size / 2, size / 2 - 2, 0, Math.PI * 2);
     ctx.fillStyle = 'white';
     ctx.fill();
-
     const circleTexture = new THREE.Texture(circleCanvas);
     circleTexture.needsUpdate = true;
 
-    // === Round Dot Material ===
     const material = new THREE.PointsMaterial({
       map: circleTexture,
       color: 0xe4e4e4,
@@ -51,11 +65,9 @@ const Hero = () => {
       sizeAttenuation: true,
     });
 
-    // === Create Dots Geometry ===
     const dotCount = 600;
     const spread = 12;
     const positions = new Float32Array(dotCount * 3);
-
     for (let i = 0; i < dotCount; i++) {
       positions[i * 3] = (Math.random() - 0.5) * spread * 2;
       positions[i * 3 + 1] = (Math.random() - 0.5) * spread * 2;
@@ -64,42 +76,32 @@ const Hero = () => {
 
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
-    // === Random Velocities ===
-    const velocities = new Float32Array(dotCount * 2);
+    const velocities = new Float32Array(dotCount * 3);
     for (let i = 0; i < velocities.length; i++) {
       velocities[i] = (Math.random() - 0.5) * 0.0003;
     }
 
-    // === Animate Dots ===
     function animate() {
       requestAnimationFrame(animate);
       const pos = geometry.attributes.position.array;
-
       for (let i = 0; i < pos.length; i += 3) {
         pos[i] += velocities[i];
         pos[i + 1] += velocities[i + 1];
         pos[i + 2] += velocities[i + 2];
-
-        // Bounce inside boundaries
         if (pos[i] > spread || pos[i] < -spread) velocities[i] *= -1;
         if (pos[i + 1] > spread || pos[i + 1] < -spread) velocities[i + 1] *= -1;
         if (pos[i + 2] > spread || pos[i + 2] < -spread) velocities[i + 2] *= -1;
       }
-
       geometry.attributes.position.needsUpdate = true;
       particles.rotation.y += 0.0005;
       particles.rotation.x += 0.0003;
-
       renderer.render(scene, camera);
     }
-
     animate();
 
-    // === Resize Handling ===
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -118,7 +120,11 @@ const Hero = () => {
       <canvas ref={canvasRef} className={styles.backgroundCanvas}></canvas>
       <div className={styles.heroContent}>
         <p className={styles.title}>Hi, I'm Harris Shoukat</p>
-        <p className={styles.subtitle}>Developer & Designer</p>
+        <p
+          className={`${styles.subtitle} ${fade ? styles.fadeIn : styles.fadeOut}`}
+        >
+          {currentWord}
+        </p>
         <div className={styles.scrollIndicator}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path
