@@ -8,7 +8,7 @@
   padding: 1rem 2rem;
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(2px) saturate(180%);
+  backdrop-filter: blur(3px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 0 200px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;

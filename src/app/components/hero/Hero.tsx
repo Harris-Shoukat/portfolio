@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import styles from './Hero.module.css';
 
 const Hero = () => {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [currentWord, setCurrentWord] = useState('Frontend Developer');
   const [fade, setFade] = useState(true);
   const words = ['Frontend Developer', 'Designer', 'Freelancer'];
@@ -25,6 +25,8 @@ const Hero = () => {
 
   // === Three.js Background ===
   useEffect(() => {
+    if (!canvasRef.current) return;
+
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       75,
@@ -47,6 +49,7 @@ const Hero = () => {
     circleCanvas.width = size;
     circleCanvas.height = size;
     const ctx = circleCanvas.getContext('2d');
+    if (!ctx) return; // Add null check for ctx
     ctx.beginPath();
     ctx.arc(size / 2, size / 2, size / 2 - 2, 0, Math.PI * 2);
     ctx.fillStyle = 'white';

@@ -1,12 +1,10 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import Navbar from "@/app/components/navbar/Navbar";
-import SplashScreen from "./components/SplashScreen";
+"use client";
 
-export const metadata: Metadata = {
-  title: "My Portfolio",
-  description: "A portfolio of my work.",
-};
+import "./globals.css";
+import Navbar from "./components/navbar/Navbar";
+import SplashScreen from "./components/SplashScreen";
+import Footer from "./components/footer/Footer";
+
 
 export default function RootLayout({
   children,
@@ -19,6 +17,7 @@ export default function RootLayout({
         <SplashScreen />
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
