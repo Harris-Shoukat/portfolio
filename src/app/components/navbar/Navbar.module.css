@@ -28,7 +28,7 @@
 /* ====== NAV LINKS ====== */
 .navLinks {
   display: flex;
-  font: 1rem sans-serif;
+  font: 1.2rem sans-serif;
   gap: 1.5rem;
 }
 
@@ -41,7 +41,7 @@
 }
 
 .navLinks a:hover {
-  color: #ffb703;
+  color: #e64852;
 }
 
 /* ====== CTA Buttons ====== */
@@ -56,15 +56,16 @@
   padding: 0.5rem 1rem;
   background-color: #e4e4e4;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
   transition: all 0.3s ease;
   backdrop-filter: blur(6px);
 }
 
 .ctaButtons button:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-  color: #000;
+  background-color: #ff001113;
+  color: #e64852;
+  border-color: #e64852;
 }
 
 .menuIcon {

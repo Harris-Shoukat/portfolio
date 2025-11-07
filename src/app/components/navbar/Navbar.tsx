@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Navbar.module.css';
-import logo from '../../assets/logos.png';
-import { Menu, X } from 'lucide-react'; // icons for mobile toggle
+import logo from '../../assets/logoremovebg.png';
+import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -14,7 +14,7 @@ const Navbar = () => {
       <div className={styles.navbarContent}>
         {/* Logo */}
         <div className={styles.logo}>
-          <Image src={logo} alt="Logo" width={50} height={50} />
+          <Image src={logo} alt="Logo" width={70} height={60} />
         </div>
 
         {/* Links */}

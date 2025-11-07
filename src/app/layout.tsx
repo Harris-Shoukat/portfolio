@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/app/components/navbar/Navbar";
+import SplashScreen from "./components/SplashScreen";
 
 export const metadata: Metadata = {
   title: "My Portfolio",
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <SplashScreen />
         <Navbar />
         {children}
       </body>
