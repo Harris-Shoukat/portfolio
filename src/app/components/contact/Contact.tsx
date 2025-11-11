@@ -33,7 +33,7 @@ export default function Contact() {
           {/* ────── LEFT ────── */}
           <div className="flex flex-col space-y-8">
             {/* Email */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 justify-center md:justify-start">
               <Mail className="w-6 h-6 text-gray-700" />
               <a
                 href="mailto:your@email.com"
@@ -44,7 +44,7 @@ export default function Contact() {
             </div>
 
             {/* Social Icons */}
-            <div className="flex space-x-6">
+            <div className="flex space-x-6 items-center justify-center md:justify-start">
               <Link
                 href="https://github.com/Harris-Shoukat"
                 target="_blank"
@@ -65,7 +65,7 @@ export default function Contact() {
             </div>
 
             {/* Optional extra text */}
-            <p className="text-gray-600 max-w-md">
+            <p className="text-gray-600 md:max-w-md text-center md:text-left">
               I’m open for freelance work, collaboration, or just a friendly chat.
               Drop me a line!
             </p>
