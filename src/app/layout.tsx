@@ -14,7 +14,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* <SplashScreen /> */}
+        <SplashScreen />
         <Navbar />
         {children}
         <Footer />
