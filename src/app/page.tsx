@@ -4,6 +4,7 @@ import Hero from './components/hero/Hero';
 import Experience from './components/experience/Experience';
 import Contact from './components/contact/Contact';
 import About from './components/about/About';
+import TechnicalProficiency from './components/technicalproficiency/TechnicalProficiency';
 
 
 const HomePage = () => {
@@ -12,6 +13,7 @@ const HomePage = () => {
       <Hero />
       <Experience />
       <About />
+      <TechnicalProficiency />
       <Contact />
     </>
   );

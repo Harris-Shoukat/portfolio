@@ -7,10 +7,8 @@ const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [currentWord, setCurrentWord] = useState('Frontend Developer');
   const [fade, setFade] = useState(true);
-  const words = ['Frontend Developer', 'Designer', 'Freelancer'];
-
-  // === Smooth Rotate Words ===
   useEffect(() => {
+    const words = ['Frontend Developer', 'Designer', 'Freelancer'];
     let index = 0;
     const interval = setInterval(() => {
       setFade(false); // fade out
@@ -122,7 +120,7 @@ const Hero = () => {
     <section className={styles.hero}>
       <canvas ref={canvasRef} className={styles.backgroundCanvas}></canvas>
       <div className={styles.heroContent}>
-        <p className={styles.title}>Hi, I'm Harris Shoukat</p>
+        <p className={styles.title}>Hi, I&apos;m Harris Shoukat</p>
         <p
           className={`${styles.subtitle} ${fade ? styles.fadeIn : styles.fadeOut}`}
         >

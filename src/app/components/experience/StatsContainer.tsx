@@ -1,16 +1,16 @@
 import React from "react";
-import { Calendar, Briefcase, Code, MonitorCog } from "lucide-react";
+import { Calendar, Code, MonitorCog } from "lucide-react";
 import { NumberTicker } from "@/components/ui/number-ticker";
 
 interface StatsContainerProps {
-  styles: any;
+  styles: Record<string, string>;
 }
 
 const StatsContainer: React.FC<StatsContainerProps> = ({ styles }) => {
   const stats = [
     { icon: <Calendar className={styles.icon} />, number: 1, label: "Years of Experience" },
     { icon: <MonitorCog className={styles.icon} />, number: 6, label: "Projects Done", addPlus: true },
-    { icon: <Code className={styles.icon} />, number: 900, label: "Hours Coded", addPlus: true },
+    { icon: <Code className={styles.icon} />, number: 1000, label: "Hours Coded", addPlus: true },
   ];
 
   return (

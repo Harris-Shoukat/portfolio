@@ -31,17 +31,20 @@ export function DottedMap({
   className,
   style,
 }: DottedMapProps) {
-  const { points, addMarkers } = createMap({
-    width,
-    height,
-    mapSamples,
-  })
+  const { points, addMarkers } = React.useMemo(() => {
+    return createMap({
+      width,
+      height,
+      mapSamples,
+    })
+  }, [width, height, mapSamples])
 
   const processedMarkers = addMarkers(markers)
 
   // Compute stagger helpers in a single, simple pass
   const { xStep, yToRowIndex } = React.useMemo(() => {
-    const sorted = [...points].sort((a, b) => a.y - b.y || a.x - b.x)
+    const pointsArray = points as typeof points | readonly (typeof points[number])[]
+    const sorted = [...pointsArray].sort((a, b) => a.y - b.y || a.x - b.x)
     const rowMap = new Map<number, number>()
     let step = 0
     let prevY = Number.NaN

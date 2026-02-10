@@ -1,6 +1,6 @@
 "'use client';"
 import { DottedMap } from '@/components/ui/dotted-map';
-import { Mail, Github, Linkedin, Twitter } from 'lucide-react';
+import { Mail, Github, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 
 const markers = [
