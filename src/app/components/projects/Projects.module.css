@@ -1,0 +1,242 @@
+/* Projects.module.css */
+
+.projectsSection {
+  padding: 80px 20px;
+  background-color: var(--background-color-dark);
+  color: var(--text-color-light);
+  text-align: center;
+}
+
+.sectionTitle {
+  font-size: 3rem;
+  margin-bottom: 60px;
+  color: var(--primary-color);
+  position: relative;
+  display: inline-block;
+}
+
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: var(--accent-color);
+  border-radius: 2px;
+}
+
+/* ────────────────────────────────────────
+   Timeline
+───────────────────────────────────────── */
+
+.timeline {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.timeline::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  background: linear-gradient(to bottom, var(--timeline-line-color)15%,var(--muted-foreground)25%, transparent 100%);
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.timelineItem {
+  padding: 10px 40px;
+  position: relative;
+  width: 50%;
+  margin-bottom: 70px;
+  opacity: 0;
+  z-index: 2;
+  transition: opacity 0.4s ease;
+}
+
+.timelineItem.left {
+  left: 0;
+  text-align: left;
+}
+
+.timelineItem.right {
+  left: 50%;
+  text-align: left;
+}
+
+.timelineNode {
+  --size: 25px;
+  width: var(--size);
+  height: var(--size);
+  background-color: #2d2d2d;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+.timelineItem.left .timelineNode {
+  left: 100%;
+}
+
+.timelineItem.right .timelineNode {
+  left: 0;
+}
+
+.projectCard {
+  padding: 24px;
+  background-color: var(--card-background-color, #2a2a2a);
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+}
+
+.projectCard:hover {
+  transform: translateY(-8px);
+}
+
+.projectImageContainer {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.projectImage {
+  transition: transform 0.4s ease;
+}
+
+.projectCard:hover .projectImage {
+  transform: scale(1.06);
+}
+
+.projectTitle {
+  font-size: 1.9rem;
+  margin-bottom: 12px;
+  color: var(--primary-color);
+}
+
+.projectDescription {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--text-color-secondary, #ccc);
+  flex-grow: 1;
+  margin-bottom: 20px;
+}
+
+.githubButton {
+  display: inline-block;
+  background-color: #333;
+  color: white;
+  padding: 10px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+  margin-top: 12px;
+}
+
+.githubButton:hover {
+  background-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+/* ────────────────────────────────────────
+   Animation when visible (triggered by Intersection Observer)
+───────────────────────────────────────── */
+
+.timelineItem.visible {
+  opacity: 1;
+  animation: 0.9s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation-delay: calc(var(--order) * 180ms);
+}
+
+.timelineItem.left.visible {
+  animation-name: slideInFromLeft;
+}
+
+.timelineItem.right.visible {
+  animation-name: slideInFromRight;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(190px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(90px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ────────────────────────────────────────
+   Mobile / Tablet (stacked version)
+───────────────────────────────────────── */
+
+@media screen and (max-width: 768px) {
+  .timeline::after {
+    left: 1% !important;
+    transform: none;
+    background: linear-gradient(to bottom, var(--timeline-line-color)15%,var(--muted-foreground)25%, transparent 100%);
+  }
+
+  .timelineItem {
+    width: 100%;
+    left: 0 !important;
+    padding: 10px 0px 0px 30px;
+    text-align: left !important;
+  }
+
+  .timelineNode {
+    left: 32px !important;
+    transform: translateX(-50%);
+  }
+
+  .timelineItem.visible {
+    animation-name: slideInFromRight !important;
+    animation-delay: calc(var(--order) * 220ms) !important;
+  }
+
+  @keyframes slideInFromRight {
+    from {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .sectionTitle {
+    font-size: 2.5rem;
+  }
+
+  .projectImageContainer {
+    height: 200px;
+  }
+}

@@ -180,6 +180,20 @@ body {
   --sidebar-ring: oklch(0.705 0.015 286.067);
 }
 
+/* Custom variables for Projects section */
+:root {
+  --background-color-dark: var(--background); /* Map to existing background */
+  --text-color-light: var(--foreground); /* Map to existing foreground */
+  --primary-color: var(--primary); /* Map to existing primary */
+  --button-text-color: var(--primary-foreground); /* Map to existing primary-foreground */
+  --card-background-color: var(--card); /* Map to existing card */
+  --text-color-secondary: var(--muted-foreground); /* Map to existing muted-foreground */
+  --accent-color: var(--accent); /* Map to existing accent */
+  --accent-color-hover: oklch(0.9 0.001 286.375); /* Slightly darker accent for hover */
+  --timeline-line-color: var(--muted);
+  --timeline-node-border-color: var(--background);
+}
+
 .dark {
 
   --background: oklch(0.141 0.005 285.823);
@@ -244,6 +258,20 @@ body {
 
   --sidebar-ring: oklch(0.552 0.016 285.938);
 }
+
+.dark {
+  --background-color-dark: var(--background);
+  --text-color-light: var(--foreground);
+  --card-background-color: var(--card);
+  --primary-color: var(--primary);
+  --button-text-color: var(--primary-foreground);
+  --text-color-secondary: var(--muted-foreground);
+  --accent-color: var(--accent);
+  --accent-color-hover: oklch(0.2 0.006 286.033); /* Slightly darker accent for hover */
+  --timeline-line-color: var(--muted);
+  --timeline-node-border-color: var(--background);
+}
+
 
 @layer base {
   * {

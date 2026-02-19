@@ -5,6 +5,7 @@ import Experience from './components/experience/Experience';
 import Contact from './components/contact/Contact';
 import About from './components/about/About';
 import TechnicalProficiency from './components/technicalproficiency/TechnicalProficiency';
+import Projects from './components/projects/Projects'; // Import the new Projects component
 
 
 const HomePage = () => {
@@ -14,6 +15,7 @@ const HomePage = () => {
       <Experience />
       <About />
       <TechnicalProficiency />
+      <Projects />
       <Contact />
     </>
   );

@@ -50,7 +50,7 @@ const Navbar = () => {
           <button>
             <a href="#contact">Hire Me</a>
           </button>
-          <button>
+          {/* <button>
             <a
               href="https://drive.google.com/file/d/1vLK-Q6mspTzQ8TtAd8tjuu3GZOaZUAgA/view"
               target="_blank"
@@ -58,7 +58,7 @@ const Navbar = () => {
             >
               Resume
             </a>
-          </button>
+          </button> */}
         </div>
 
         {/* Mobile toggle icon */}
