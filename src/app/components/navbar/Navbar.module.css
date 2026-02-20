@@ -81,7 +81,7 @@
   .navbar {
     top: 0%;
     width: 100%;
-    padding: 1rem 10rem;
+    padding: 0.6rem 1rem;
   }
 
   .navLinks {
@@ -129,10 +129,6 @@
     border-radius: 8px;
     font-size: 1rem;
     width: 80%;
-  }
-
-  .logo {
-    padding: 0 2rem;
   }
 
   .menuIcon {

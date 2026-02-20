@@ -212,13 +212,12 @@
   }
 
   .timelineNode {
-    left: 32px !important;
-    transform: translateX(-50%);
+    visibility: hidden;
   }
 
   .timelineItem.visible {
     animation-name: slideInFromRight !important;
-    animation-delay: calc(var(--order) * 220ms) !important;
+    animation-delay: calc(var(--order) * 800ms) !important;
   }
 
   @keyframes slideInFromRight {

@@ -41,7 +41,7 @@ const Navbar = () => {
             <a href="#contact" style={{ width: "100%" }}>
               Hire Me
             </a>
-            <button style={{ width: "100%" }}>Resume</button>
+            {/* <button style={{ width: "100%" }}>Resume</button> */}
           </div>
         </div>
 
