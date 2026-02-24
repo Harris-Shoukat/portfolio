@@ -75,7 +75,7 @@ export default function Contact() {
           <div className="relative w-full overflow-hidden  shadow-sm">
             {/* Radial overlay (keeps the map from being too bright) */}
             <div className="absolute inset-0 bg-gradient-radial from-transparent to-gray-200/70 pointer-events-none" />
-            <DottedMap markers={markers} />
+            <DottedMap markers={markers} mapSamples={2200} />
           </div>
         </div>
       </div>

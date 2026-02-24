@@ -1,4 +1,242 @@
-.outlinetext {
-  color: transparent;
-  -webkit-text-stroke: 2px #2d2d2d;
+/* About – modern clean layout */
+
+.section {
+  padding: 5rem 1.5rem 6rem;
+  background: var(--background);
+  color: var(--foreground);
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto 3.5rem;
+}
+
+.label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--primary);
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 1.05rem;
+  color: var(--muted-foreground);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Two-column layout */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .layout {
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 3.5rem;
+    align-items: center;
+  }
+}
+
+/* Image – responsive, centered on small/tablet with nice dimensions */
+.imageWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .imageWrap {
+    justify-content: flex-start;
+  }
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  display: block;
+  border-radius: 16px;
+  object-fit: contain;
+}
+
+/* Small screens: centered, constrained nice width/height */
+@media (max-width: 599px) {
+  .imageWrap {
+    margin: 0 auto;
+  }
+
+  .image {
+    max-width: min(280px, 85vw);
+    max-height: 340px;
+    width: auto;
+    margin: 0 auto;
+    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Tablet: slightly larger, still centered */
+@media (min-width: 600px) and (max-width: 899px) {
+  .imageWrap {
+    margin: 0 auto;
+  }
+
+  .image {
+    max-width: min(360px, 50vw);
+    max-height: 420px;
+    width: auto;
+    margin: 0 auto;
+    box-shadow: 0 16px 48px -16px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Content */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.lead {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.role {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* Focus list */
+.focus {
+  padding-top: 0.5rem;
+}
+
+.focusLabel {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin-bottom: 1rem;
+}
+
+.focusList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem 1.25rem;
+}
+
+.focusItem {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1rem 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.focusItem:hover {
+  border-color: var(--muted-foreground);
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.08);
+}
+
+.focusIcon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  color: var(--primary);
+  margin-top: 0.15rem;
+}
+
+.focusTitle {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 0.25rem;
+}
+
+.focusText {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .section {
+    padding: 3.5rem 1rem 4rem;
+  }
+
+  .header {
+    margin-bottom: 2.5rem;
+  }
+
+  .title {
+    font-size: 1.85rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+
+  .focusList {
+    grid-template-columns: 1fr;
+  }
+
+  .focusItem {
+    padding: 0.875rem 1rem;
+  }
+
+  .focusIcon {
+    width: 20px;
+    height: 20px;
+  }
 }

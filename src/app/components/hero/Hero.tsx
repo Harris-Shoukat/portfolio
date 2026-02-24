@@ -3,6 +3,23 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import styles from './Hero.module.css';
 
+// Throttle resize to reduce layout thrash
+function throttle<T extends (...args: unknown[]) => void>(fn: T, ms: number): T {
+  let last = 0;
+  let raf: number | null = null;
+  return ((...args: Parameters<T>) => {
+    const now = performance.now();
+    if (raf !== null) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      if (now - last >= ms) {
+        last = now;
+        fn(...args);
+      }
+      raf = null;
+    });
+  }) as T;
+}
+
 const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [currentWord, setCurrentWord] = useState('Frontend Developer');
@@ -11,19 +28,23 @@ const Hero = () => {
     const words = ['Frontend Developer', 'Designer', 'Freelancer'];
     let index = 0;
     const interval = setInterval(() => {
-      setFade(false); // fade out
+      setFade(false);
       setTimeout(() => {
         index = (index + 1) % words.length;
         setCurrentWord(words[index]);
-        setFade(true); // fade in
-      }, 500); // fade-out duration
-    }, 2500); // word duration
+        setFade(true);
+      }, 500);
+    }, 2500);
     return () => clearInterval(interval);
   }, []);
 
-  // === Three.js Background ===
+  // === Three.js Background (optimized) ===
   useEffect(() => {
     if (!canvasRef.current) return;
+
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const dotCount = isMobile ? 280 : 500;
+    const pixelRatio = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 2, 2);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
@@ -35,19 +56,19 @@ const Hero = () => {
     const renderer = new THREE.WebGLRenderer({
       canvas: canvasRef.current,
       alpha: true,
-      antialias: true,
+      antialias: !isMobile,
+      powerPreference: 'high-performance',
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(pixelRatio);
     camera.position.z = 8;
 
-    // Circle Texture
     const size = 64;
     const circleCanvas = document.createElement('canvas');
     circleCanvas.width = size;
     circleCanvas.height = size;
     const ctx = circleCanvas.getContext('2d');
-    if (!ctx) return; // Add null check for ctx
+    if (!ctx) return;
     ctx.beginPath();
     ctx.arc(size / 2, size / 2, size / 2 - 2, 0, Math.PI * 2);
     ctx.fillStyle = 'white';
@@ -66,7 +87,6 @@ const Hero = () => {
       sizeAttenuation: true,
     });
 
-    const dotCount = 600;
     const spread = 12;
     const positions = new Float32Array(dotCount * 3);
     for (let i = 0; i < dotCount; i++) {
@@ -85,9 +105,17 @@ const Hero = () => {
       velocities[i] = (Math.random() - 0.5) * 0.0003;
     }
 
+    let visible = true;
+    let rafId: number;
+    const onVisibilityChange = () => {
+      visible = document.visibilityState === 'visible';
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
     function animate() {
-      requestAnimationFrame(animate);
-      const pos = geometry.attributes.position.array;
+      rafId = requestAnimationFrame(animate);
+      if (!visible) return;
+      const pos = geometry.attributes.position.array as Float32Array;
       for (let i = 0; i < pos.length; i += 3) {
         pos[i] += velocities[i];
         pos[i + 1] += velocities[i + 1];
@@ -103,15 +131,20 @@ const Hero = () => {
     }
     animate();
 
-    const handleResize = () => {
+    const handleResize = throttle(() => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-    };
+    }, 150);
     window.addEventListener('resize', handleResize);
 
     return () => {
+      cancelAnimationFrame(rafId);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('resize', handleResize);
+      geometry.dispose();
+      material.dispose();
+      circleTexture.dispose();
       renderer.dispose();
     };
   }, []);

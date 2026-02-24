@@ -4,7 +4,7 @@ import "./globals.css";
 import Navbar from "./components/navbar/Navbar";
 import SplashScreen from "./components/SplashScreen";
 import Footer from "./components/footer/Footer";
-
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function RootLayout({
   children,
@@ -18,6 +18,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <ScrollToTop />
       </body>
     </html>
   );
