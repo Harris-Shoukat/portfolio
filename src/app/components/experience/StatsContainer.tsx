@@ -8,7 +8,7 @@ interface StatsContainerProps {
 
 const StatsContainer: React.FC<StatsContainerProps> = ({ styles }) => {
   const stats = [
-    { icon: <Calendar className={styles.icon} />, number: 1, label: "Years of Experience" },
+    { icon: <Calendar className={styles.icon} />, number: 1, label: "Years of Experience", addPlus: true },
     { icon: <MonitorCog className={styles.icon} />, number: 6, label: "Projects Done", addPlus: true },
     { icon: <Code className={styles.icon} />, number: 1000, label: "Hours Coded", addPlus: true },
   ];

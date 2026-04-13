@@ -4,8 +4,8 @@ import React, { useRef, useEffect, useCallback } from "react";
 import styles from "./Projects.module.css";
 import Image from "next/image";
 import coffee from "../../assets/coffee.png";
-import password from "../../assets/password.jpg";
 import users from "../../assets/users.png";
+import cargo from "../../assets/cargo.png";
 import { Github, ExternalLink } from "lucide-react";
 
 interface Project {
@@ -21,6 +21,16 @@ interface Project {
 const projects: Project[] = [
   {
     id: 1,
+    name: "Cargo Webapp",
+    image: cargo.src,
+    githubUrl: "https://github.com/yourusername/cargo-webapp",
+    liveUrl: "https://speedypk.com",
+    description:
+      "A web platform for local businesses to handle worldwide parcel delivery and order tracking. Built with Next.js and Supabase, featuring full authentication and a robust logistics management system.",
+    tags: ["Next.js", "Supabase", "Auth", "Logistics"],
+  },
+  {
+    id: 2,
     name: "HMC Society",
     image:
       "https://img.freepik.com/free-photo/homepage-seen-computer-screen_23-2149416723.jpg?semt=ais_hybrid&w=740&q=80",
@@ -30,22 +40,13 @@ const projects: Project[] = [
     tags: ["React", "Node.js", "Auth", "Real-time"],
   },
   {
-    id: 2,
+    id: 3,
     name: "Coffee App",
     image: coffee.src,
     githubUrl: "https://github.com/yourusername/project-two",
     description:
       "A React Native coffee ordering app featuring categorized coffee listings, branch-based location filters, favorites functionality, and a cart system for seamless ordering experience.",
     tags: ["React Native", "Expo", "Cart"],
-  },
-  {
-    id: 3,
-    name: "Password Agent",
-    image: password.src,
-    githubUrl: "https://github.com/yourusername/project-three",
-    description:
-      "A secure web-based password manager built to demonstrate authentication and protected routing. The system includes login functionality, a user-specific dashboard, and CRUD operations for managing stored credentials, focusing on privacy and structured data handling.",
-    tags: ["Web", "Auth", "CRUD", "Security"],
   },
   {
     id: 4,
