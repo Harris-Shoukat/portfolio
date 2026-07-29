@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import aboutimg from "../../assets/about.jpeg";
 import { Code2, Server, Database, GitBranch, ArrowUpRight } from "lucide-react";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 
 const focusAreas = [
   {
@@ -47,23 +47,7 @@ export default function About() {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <p className="text-sm font-medium text-[#71717A] tracking-wide uppercase mb-3 font-mono">
-            {'<about />'}
-          </p>
-          <h2 id="about-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
-            About{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F5A0] to-[#4F46E5]">
-              Me
-            </span>
-          </h2>
-        </motion.div>
+        <SectionHeader tag="<about />" title="About" gradient="Me" mono />
 
         <motion.div
           initial="hidden"
