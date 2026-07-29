@@ -1,73 +1,104 @@
 "use client";
-import React, { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import styles from "./Navbar.module.css";
-import logo from "../../assets/logoremovebg.png";
+
+import React, { useState, useEffect } from "react";
+import { motion } from "motion/react";
 import { Menu, X } from "lucide-react";
 
-const Navbar = () => {
+const navLinks = [
+  { href: "#bento", label: "Experience" },
+  { href: "#projects", label: "Projects" },
+  { href: "#about", label: "About" },
+  { href: "#contact", label: "Contact" },
+];
+
+export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.navbarContent}>
-        {/* Logo */}
-        <div className={styles.logo}>
-          <Link href="/">
-            <Image src={logo} alt="Logo" width={70} height={60} />
-          </Link>
-        </div>
-
-        {/* Links */}
-        <div
-          className={`${styles.navLinks} ${menuOpen ? styles.showMenu : ""}`}
+    <nav className="fixed top-0 left-0 right-0 z-50">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <motion.div
+          className={`mt-3 rounded-2xl border transition-all duration-300 ${
+            scrolled
+              ? "border-[#1F1F1F] bg-[#0A0A0A]/90 backdrop-blur-xl shadow-lg shadow-black/10"
+              : "border-transparent bg-transparent"
+          }`}
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
         >
-          <a href="#experience" onClick={() => setMenuOpen(false)}>
-            experience
-          </a>
-          <a href="#project" onClick={() => setMenuOpen(false)}>
-            project
-          </a>
-          <a href="#about" onClick={() => setMenuOpen(false)}>
-            about
-          </a>
-          <a href="#contact" onClick={() => setMenuOpen(false)}>
-            contact
-          </a>
-
-          {/* Buttons inside mobile menu */}
-          <div className={styles.mobileButtons}>
-            <a href="#contact" style={{ width: "100%" }}>
-              Hire Me
+          <div className="flex h-14 sm:h-16 items-center justify-between px-5 sm:px-6">
+            <a href="#" className="text-base sm:text-lg font-bold tracking-tight text-[#FAFAFA]">
+              Harris<span className="text-[#00F5A0]">.</span>
             </a>
-            {/* <button style={{ width: "100%" }}>Resume</button> */}
-          </div>
-        </div>
 
-        {/* Desktop buttons */}
-        <div className={styles.ctaButtons}>
-          <button>
-            <a href="#contact">Hire Me</a>
-          </button>
-          {/* <button>
-            <a
-              href="https://drive.google.com/file/d/1vLK-Q6mspTzQ8TtAd8tjuu3GZOaZUAgA/view"
-              target="_blank"
-              rel="noopener noreferrer"
+            <div className="hidden md:flex items-center gap-8">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="relative text-sm text-[#A1A1AA] hover:text-[#FAFAFA] transition-colors duration-200 after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-[#00F5A0] after:transition-all hover:after:w-full"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+
+            <div className="hidden md:block">
+              <a
+                href="#contact"
+                className="inline-flex h-9 items-center rounded-lg bg-[#00F5A0] px-4 text-sm font-semibold text-[#0A0A0A] hover:bg-[#00F5A0]/90 transition-colors"
+              >
+                Hire Me
+              </a>
+            </div>
+
+            <button
+              className="md:hidden text-[#FAFAFA] p-1"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
             >
-              Resume
-            </a>
-          </button> */}
-        </div>
+              {menuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
 
-        {/* Mobile toggle icon */}
-        <div className={styles.menuIcon} onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? <X size={26} /> : <Menu size={26} />}
-        </div>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="border-t border-[#1F1F1F] px-5 py-4 md:hidden"
+            >
+              <div className="flex flex-col gap-3">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="text-sm text-[#A1A1AA] hover:text-[#FAFAFA] transition-colors py-1"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+                <a
+                  href="#contact"
+                  onClick={() => setMenuOpen(false)}
+                  className="inline-flex h-9 items-center justify-center rounded-lg bg-[#00F5A0] px-4 text-sm font-semibold text-[#0A0A0A] mt-2"
+                >
+                  Hire Me
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </motion.div>
       </div>
     </nav>
   );
-};
-
-export default Navbar;
+}

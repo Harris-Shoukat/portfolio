@@ -1,175 +1,210 @@
-'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import * as THREE from 'three';
-import styles from './Hero.module.css';
+"use client";
 
-// Throttle resize to reduce layout thrash
-function throttle<T extends (...args: unknown[]) => void>(fn: T, ms: number): T {
-  let last = 0;
-  let raf: number | null = null;
-  return ((...args: Parameters<T>) => {
-    const now = performance.now();
-    if (raf !== null) cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(() => {
-      if (now - last >= ms) {
-        last = now;
-        fn(...args);
+import React, { useState } from "react";
+import { motion } from "motion/react";
+import { TerminalIcon, ChevronDown } from "lucide-react";
+
+function TerminalComponent() {
+  const [output, setOutput] = useState<string[]>([]);
+  const [running, setRunning] = useState(false);
+  const [done, setDone] = useState(false);
+  const [cursorLine, setCursorLine] = useState(0);
+  const [cursorChar, setCursorChar] = useState(0);
+
+  const runCommand = () => {
+    if (running || done) return;
+    setRunning(true);
+    setOutput([]);
+    setDone(false);
+    setCursorLine(0);
+    setCursorChar(0);
+
+    const lines = [
+      '{',
+      '  "email": "harrisshaukat3@gmail.com",',
+      '  "github": "@Harris-Shoukat",',
+      '  "availability": "Open for Freelance / Full-time"',
+      '}',
+    ];
+
+    let l = 0;
+    let c = 0;
+
+    const type = () => {
+      if (l >= lines.length) {
+        setRunning(false);
+        setDone(true);
+        return;
       }
-      raf = null;
-    });
-  }) as T;
-}
 
-const Hero = () => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [currentWord, setCurrentWord] = useState('Frontend Developer');
-  const [fade, setFade] = useState(true);
-  useEffect(() => {
-    const words = ['Frontend Developer', 'Designer', 'Freelancer'];
-    let index = 0;
-    const interval = setInterval(() => {
-      setFade(false);
-      setTimeout(() => {
-        index = (index + 1) % words.length;
-        setCurrentWord(words[index]);
-        setFade(true);
-      }, 500);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
-
-  // === Three.js Background (optimized) ===
-  useEffect(() => {
-    if (!canvasRef.current) return;
-
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-    const dotCount = isMobile ? 280 : 500;
-    const pixelRatio = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 2, 2);
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    const renderer = new THREE.WebGLRenderer({
-      canvas: canvasRef.current,
-      alpha: true,
-      antialias: !isMobile,
-      powerPreference: 'high-performance',
-    });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(pixelRatio);
-    camera.position.z = 8;
-
-    const size = 64;
-    const circleCanvas = document.createElement('canvas');
-    circleCanvas.width = size;
-    circleCanvas.height = size;
-    const ctx = circleCanvas.getContext('2d');
-    if (!ctx) return;
-    ctx.beginPath();
-    ctx.arc(size / 2, size / 2, size / 2 - 2, 0, Math.PI * 2);
-    ctx.fillStyle = 'white';
-    ctx.fill();
-    const circleTexture = new THREE.Texture(circleCanvas);
-    circleTexture.needsUpdate = true;
-
-    const material = new THREE.PointsMaterial({
-      map: circleTexture,
-      color: 0xe4e4e4,
-      size: 0.1,
-      transparent: true,
-      opacity: 1,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-      sizeAttenuation: true,
-    });
-
-    const spread = 12;
-    const positions = new Float32Array(dotCount * 3);
-    for (let i = 0; i < dotCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * spread * 2;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * spread * 2;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * spread * 2;
-    }
-
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-
-    const velocities = new Float32Array(dotCount * 3);
-    for (let i = 0; i < velocities.length; i++) {
-      velocities[i] = (Math.random() - 0.5) * 0.0003;
-    }
-
-    let visible = true;
-    let rafId: number;
-    const onVisibilityChange = () => {
-      visible = document.visibilityState === 'visible';
-    };
-    document.addEventListener('visibilitychange', onVisibilityChange);
-
-    function animate() {
-      rafId = requestAnimationFrame(animate);
-      if (!visible) return;
-      const pos = geometry.attributes.position.array as Float32Array;
-      for (let i = 0; i < pos.length; i += 3) {
-        pos[i] += velocities[i];
-        pos[i + 1] += velocities[i + 1];
-        pos[i + 2] += velocities[i + 2];
-        if (pos[i] > spread || pos[i] < -spread) velocities[i] *= -1;
-        if (pos[i + 1] > spread || pos[i + 1] < -spread) velocities[i + 1] *= -1;
-        if (pos[i + 2] > spread || pos[i + 2] < -spread) velocities[i + 2] *= -1;
+      const currentLine = lines[l];
+      if (c > currentLine.length) {
+        l++;
+        c = 0;
+        setCursorLine(l);
+        setCursorChar(0);
+        setTimeout(type, 120);
+        return;
       }
-      geometry.attributes.position.needsUpdate = true;
-      particles.rotation.y += 0.0005;
-      particles.rotation.x += 0.0003;
-      renderer.render(scene, camera);
-    }
-    animate();
 
-    const handleResize = throttle(() => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    }, 150);
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      document.removeEventListener('visibilitychange', onVisibilityChange);
-      window.removeEventListener('resize', handleResize);
-      geometry.dispose();
-      material.dispose();
-      circleTexture.dispose();
-      renderer.dispose();
+      setOutput((prev) => {
+        const next = [...prev];
+        next[l] = currentLine.slice(0, c);
+        return next;
+      });
+      c++;
+      setCursorChar(c);
+      setTimeout(type, 20 + Math.random() * 30);
     };
-  }, []);
+
+    setTimeout(type, 400);
+  };
 
   return (
-    <section className={styles.hero}>
-      <canvas ref={canvasRef} className={styles.backgroundCanvas}></canvas>
-      <div className={styles.heroContent}>
-        <p className={styles.title}>Hi, I&apos;m Harris Shoukat</p>
-        <p
-          className={`${styles.subtitle} ${fade ? styles.fadeIn : styles.fadeOut}`}
-        >
-          {currentWord}
-        </p>
-        <div className={styles.scrollIndicator}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M12 18L6 12L7.41 10.59L12 15.17L16.59 10.59L18 12L12 18Z"
-              fill="currentColor"
-            />
-          </svg>
+    <div className="w-full max-w-lg rounded-xl border border-[#1F1F1F] bg-[#0D1117] overflow-hidden font-mono text-sm shadow-xl shadow-black/20">
+      <div className="flex items-center gap-1.5 border-b border-[#1F1F1F] px-4 py-2.5">
+        <div className="h-2.5 w-2.5 rounded-full bg-red-500/70" />
+        <div className="h-2.5 w-2.5 rounded-full bg-yellow-500/70" />
+        <div className="h-2.5 w-2.5 rounded-full bg-green-500/70" />
+        <span className="ml-2 text-[10px] text-[#71717A]">terminal — bash</span>
+      </div>
+      <div className="px-4 py-3 min-h-[160px]">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-[#00F5A0] select-none">$</span>
+          <span className="text-[#E6EDF3]">npx harris-shoukat</span>
+          {!running && !done && (
+            <motion.button
+              onClick={runCommand}
+              className="inline-flex items-center gap-1 rounded-md border border-[#00F5A0]/30 bg-[#00F5A0]/8 px-2.5 py-1 text-[10px] font-medium text-[#00F5A0] hover:bg-[#00F5A0]/15 transition-colors"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <TerminalIcon className="h-3 w-3" />
+              Run
+            </motion.button>
+          )}
+        </div>
+
+        <div className="mt-2.5 space-y-0.5">
+          {output.map((line, i) => {
+            const isBracket = line === '{' || line === '}';
+            const isKey = line.includes('"');
+            return (
+              <div
+                key={i}
+                className={`${
+                  isBracket ? 'text-[#F2CC60]' :
+                  isKey ? 'text-[#A5D6FF]' :
+                  'text-[#8B949E]'
+                }`}
+              >
+                {line}
+              </div>
+            );
+          })}
+          {running && (
+            <span className="inline-block h-4 w-1.5 bg-[#00F5A0] ml-0.5 animate-pulse" />
+          )}
+        </div>
+
+        {done && (
+          <motion.div
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-3 flex items-center gap-2 text-xs text-[#7EE787] border-t border-[#1F1F1F] pt-3"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-[#7EE787]" />
+            Ready to collaborate
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default function Hero() {
+  const scrollToBento = () => {
+    document.getElementById("bento")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <section className="relative min-h-screen flex items-center overflow-hidden pt-28 pb-20">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 -left-32 h-80 w-80 rounded-full bg-[#4F46E5] opacity-[0.08] blur-[128px]" />
+        <div className="absolute bottom-1/4 -right-32 h-80 w-80 rounded-full bg-[#00F5A0] opacity-[0.08] blur-[128px]" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="space-y-5 sm:space-y-6"
+          >
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.5 }}
+              className="text-xs sm:text-sm font-medium text-[#71717A] tracking-wide uppercase font-mono"
+            >
+              {'<Hi />'} — Harris Shoukat
+            </motion.p>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25, duration: 0.6 }}
+              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.08]"
+            >
+              Engineering{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F5A0] via-[#00F5A0] to-[#4F46E5]">
+                fast, scalable
+              </span>{" "}
+              web &amp; mobile interfaces.
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35, duration: 0.6 }}
+              className="text-base sm:text-lg text-[#A1A1AA] max-w-lg leading-relaxed"
+            >
+              Specialized in React, Next.js, and React Native. Bridging design and high-performance production code.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45, duration: 0.6 }}
+              className="flex items-center gap-4 pt-2"
+            >
+              <button
+                onClick={scrollToBento}
+                className="group inline-flex h-11 items-center gap-2 rounded-xl border border-[#1F1F1F] bg-[#111111] px-5 text-sm font-medium text-[#FAFAFA] hover:border-[#00F5A0]/30 hover:bg-[#00F5A0]/5 transition-all duration-300"
+              >
+                Explore Work
+                <ChevronDown className="h-3.5 w-3.5 group-hover:translate-y-0.5 transition-transform" />
+              </button>
+              <a
+                href="#contact"
+                className="text-sm text-[#71717A] hover:text-[#FAFAFA] transition-colors"
+              >
+                Get in touch &rarr;
+              </a>
+            </motion.div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5, duration: 0.7, ease: "easeOut" }}
+            className="flex justify-center lg:justify-end"
+          >
+            <TerminalComponent />
+          </motion.div>
         </div>
       </div>
     </section>
   );
-};
-
-export default Hero;
+}

@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from "motion/react";
 import { useEffect, useState } from "react";
-import img from "../assets/logoremovebg.png";
 
 export default function SplashScreen() {
   const [visible, setVisible] = useState(true);
@@ -17,20 +16,22 @@ export default function SplashScreen() {
       {visible && (
         <motion.div
           key="splash"
-          className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-[#212121] z-[9999] overflow-hidden"
+          className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-[#0A0A0A] z-[9999] overflow-hidden"
           initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <motion.img
-            src={img.src}
-            alt="Logo"
+          <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-[180px] w-auto h-auto object-contain"
-          />
+            className="text-center"
+          >
+            <span className="text-4xl font-bold text-[#FAFAFA]">
+              Harris<span className="text-[#00F5A0]">.</span>
+            </span>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

@@ -3,9 +3,8 @@
 import React, { Suspense, lazy } from "react";
 
 import Hero from "./components/hero/Hero";
-import Experience from "./components/experience/Experience";
 import About from "./components/about/About";
-import TechnicalProficiency from "./components/technicalproficiency/TechnicalProficiency";
+import BentoDashboard from "./components/bento/BentoDashboard";
 import Contact from "./components/contact/Contact";
 
 const Projects = lazy(() => import("./components/projects/Projects"));
@@ -18,9 +17,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <Experience />
+      <BentoDashboard />
       <About />
-      <TechnicalProficiency />
       <Suspense fallback={<SectionFallback />}>
         <Projects />
       </Suspense>
