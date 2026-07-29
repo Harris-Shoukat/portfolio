@@ -1,14 +1,26 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronUp } from "lucide-react";
 
 export default function ScrollToTop() {
   const [visible, setVisible] = useState(false);
+  const ticking = useRef(false);
 
   const onScroll = useCallback(() => {
-    setVisible(window.scrollY > 400);
+    if (!ticking.current) {
+      ticking.current = true;
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        setVisible((prev) => {
+          if (prev && scrollY < 350) return false;
+          if (!prev && scrollY > 450) return true;
+          return prev;
+        });
+        ticking.current = false;
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -30,10 +42,10 @@ export default function ScrollToTop() {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.2 }}
-          className="fixed bottom-6 right-6 z-40 flex h-10 w-10 items-center justify-center rounded-xl border border-[#1F1F1F] bg-[#111111] text-[#A1A1AA] hover:bg-[#1F1F1F] hover:text-[#FAFAFA] transition-colors"
+          className="fixed bottom-4 right-4 z-40 flex h-12 w-12 items-center justify-center rounded-xl border border-[#1F1F1F] bg-[#111111] text-[#A1A1AA] hover:bg-[#1F1F1F] hover:text-[#FAFAFA] transition-colors sm:bottom-6 sm:right-6 sm:h-10 sm:w-10"
           aria-label="Scroll to top"
         >
-          <ChevronUp className="h-4 w-4" />
+          <ChevronUp className="h-5 w-5 sm:h-4 sm:w-4" />
         </motion.button>
       )}
     </AnimatePresence>

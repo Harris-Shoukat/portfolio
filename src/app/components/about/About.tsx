@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
-import aboutimg from "../../assets/about.jpg";
+import aboutimg from "../../assets/about.jpeg";
 import { Code2, Server, Database, GitBranch, ArrowUpRight } from "lucide-react";
 
 const focusAreas = [
@@ -73,7 +73,6 @@ export default function About() {
           className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center"
         >
           <motion.div variants={itemVariants} className="relative">
-            <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-[#00F5A0]/30 to-[#4F46E5]/30 blur-xl opacity-60" />
             <div className="relative rounded-2xl border border-[#1F1F1F] overflow-hidden bg-[#111111]">
               <Image
                 src={aboutimg}

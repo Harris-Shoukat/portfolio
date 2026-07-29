@@ -16,7 +16,7 @@ export default function SplashScreen() {
       {visible && (
         <motion.div
           key="splash"
-          className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-[#0A0A0A] z-[9999] overflow-hidden"
+          className="fixed inset-0 w-full h-full flex items-center justify-center bg-[#0A0A0A] z-[9999] overflow-hidden"
           initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

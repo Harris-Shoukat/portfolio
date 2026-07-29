@@ -141,7 +141,7 @@ function ContactForm() {
 
 export default function Contact() {
   return (
-    <section id="contact" className="py-24 relative">
+    <section id="contact" className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-64 w-[800px] rounded-full bg-[#00F5A0] opacity-[0.03] blur-[128px]" />
       </div>
