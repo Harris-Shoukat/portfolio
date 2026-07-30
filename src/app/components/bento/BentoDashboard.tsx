@@ -165,7 +165,7 @@ export default function BentoDashboard() {
                 Available
               </motion.span>
               <p className="text-[10px] text-[#71717A]">Open for freelance &amp; full-time</p>
-              <a href={SOCIAL.github} target="_blank" rel="noopener noreferrer" className="text-[10px] font-mono text-[#71717A] hover:text-[#FAFAFA] transition-colors">
+              <a href={SOCIAL.github} target="_blank" rel="noopener noreferrer" className="text-[10px] font-mono text-[#00F5A0] hover:text-[#FAFAFA] transition-colors">
                 {SOCIAL.githubHandle}
               </a>
             </div>
@@ -193,7 +193,7 @@ export default function BentoDashboard() {
                   <span className="text-[#FAFAFA] font-mono">active</span>
                 </div>
               </div>
-              <a href={SOCIAL.github} target="_blank" rel="noopener noreferrer" className="text-[10px] font-mono text-[#4F46E5] hover:text-[#00F5A0] transition-colors">
+              <a href={SOCIAL.github} target="_blank" rel="noopener noreferrer" className="text-[10px] font-mono text-[#00F5A0] hover:text-[#FAFAFA] transition-colors">
                 github.com/Harris-Shoukat
               </a>
             </div>

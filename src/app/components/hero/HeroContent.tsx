@@ -52,8 +52,8 @@ export function HeroContent() {
         variants={itemVariants}
         className="text-base sm:text-lg text-[#A1A1AA] max-w-lg leading-relaxed"
       >
-        Specialized in React, Next.js, and React Native. Bridging design and
-        high-performance production code.
+        Full-stack engineer specializing in TypeScript, Python, and cross-platform
+        development. From polished UIs to scalable APIs.
       </motion.p>
 
       <motion.div variants={itemVariants} className="flex items-center gap-4 pt-2">
